@@ -4,10 +4,9 @@ function [ ] = motion_detect(images, motion_filter, thresh, spatial_filter)
 %
 %%
 
-%if < 4 arguments are passed, set smooth and spatial_filter to zero
-if (nargin<4 || max(size(spatial_filter))==1)
+%if spatial filter is a scalar
+if (max(size(spatial_filter))==1)
     smooth=0;
-    spatial_filter=0;
 end
 
 n=(size(motion_filter) - 1)/2;
