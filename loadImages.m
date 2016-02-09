@@ -1,19 +1,14 @@
-function img = loadImages();
-filename='C:\Users\Payden McBee\Documents\NEU\NEUclasses\CompVision\Office\Office';
-addpath(filename);
+function imgs = loadImages();
+filename1='C:\Users\Payden McBee\Documents\NEU\NEUclasses\CompVision\Office\Office\';
+addpath(filename1);
 
-srcFiles = dir('C:\Users\Payden McBee\Documents\NEU\NEUclasses\CompVision\Office\Office\*.jpg'); 
-imgs = zeros(240,320,length(srcFiles));
-
-filename = strcat('C:\Users\Payden McBee\Documents\NEU\NEUclasses\CompVision\Office\Office\',srcFiles(1).name);
-img = imread(filename);
-[length, width]=size(img);
+allPics = strcat(filename1,'*.jpg');
+srcFiles = dir(allPics);     %  'C:\Users\Payden McBee\Documents\NEU\NEUclasses\CompVision\Office\Office\*.jpg'); 
+imgs = uint8(zeros(240,320,length(srcFiles)));
 
 for i = 1 : length(srcFiles)
-    filename = strcat('C:\Users\Payden McBee\Documents\NEU\NEUclasses\CompVision\Office\Office\',srcFiles(i).name);
-    img = imread(filename);
-    %figure, imshow(I);
+    filename3 = strcat(filename1,srcFiles(i).name);
+    [tempI,map] = imread(filename3);
+    temp2=rgb2gray(tempI);
+    imgs(:,:,i)=temp2;
 end
-
-img = rgb2gray(img);
-imshow(img);
