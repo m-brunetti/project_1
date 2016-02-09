@@ -1,16 +1,14 @@
-function [ ] = motion_detect(images_path, motion_filter, smooth, spatial_filter)
+function [ ] = motion_detect(images, motion_filter, thresh, spatial_filter)
 %% Simple motion detection filter
 %
 %
 %%
 
 %if < 4 arguments are passed, set smooth and spatial_filter to zero
-if (nargv<4)
+if (nargin<4 || max(size(spatial_filter))==1)
     smooth=0;
     spatial_filter=0;
 end
-
-images=read_images(images_path);%or however we decide to read the images
 
 n=(size(motion_filter) - 1)/2;
 
@@ -19,6 +17,7 @@ J=size(images,3);
 
 if (smooth==ture)
     %smooth image
+    
     
 end
 
@@ -36,7 +35,7 @@ for frame=n:size(images,1)-n
            end
            %if derivative is above threshold, set that pixel to true in
            %mask
-           if (pixel_deriv > threshold)
+           if (pixel_deriv > thresh)
                motion_mask(i,j)=1;
            end
        end
