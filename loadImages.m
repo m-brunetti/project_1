@@ -1,5 +1,7 @@
-function imgs = loadImages();
-filename1='C:\Users\Payden McBee\Documents\NEU\NEUclasses\CompVision\Office\Office\';
+function imgs = loadImages(images_path);
+%filename1='C:\Users\Payden McBee\Documents\NEU\NEUclasses\CompVision\Office\Office\';
+filename1=images_path;
+%filename1='C:\Users\pqm3883\Documents\Office\Office\';
 addpath(filename1);
 
 allPics = strcat(filename1,'*.jpg');
