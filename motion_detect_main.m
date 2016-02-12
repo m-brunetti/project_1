@@ -9,7 +9,9 @@ if (nargin<4)%make sure if DOG filter is used there is a value for tsigma
         disp('value for tsigma required for 1D deriviative of gaussian');
         return
     end
-elseif (nargin<5)%no spatial smoothing if <5 args are passed
+end
+
+if (nargin<5)%no spatial smoothing if <5 args are passed
     spatial_filter=0;
 end
 
@@ -43,7 +45,7 @@ switch motion_filter_name
         return
 end
 
-images=loadImages;
+images=loadImages(images_path);
 motion_detect(images, motion_filter, thresh, spatial_filter);
 
 
