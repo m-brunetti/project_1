@@ -15,6 +15,7 @@ if (nargin<5)%no spatial smoothing if <5 args are passed
     spatial_filter=0;
 end
 
+disp(['Motion filter name - ',motion_filter_name]);
 
 switch motion_filter_name
     case 'simple'                       %simple 1D motion filter
@@ -32,18 +33,23 @@ switch motion_filter_name
         %calcualte Derivative of Gaussian and set as motion_filter
         deriv_of_gauss=zeros(1,filter_size-2);
         for i=2:(size(gaussian_kernel,2)-1)
-            deriv_of_gauss(i-1)=(0.5.*[-1 0 1]).*gaussian_kernel(i-1:i+1);
+            deriv_of_gauss(i-1)=sum((0.5.*[-1 0 1]).*gaussian_kernel(i-1:i+1));
         end
         
         %normalize DOG filter?
         
         motion_filter=deriv_of_gauss;
+        
+        fprintf('tsigma = %0.3f\n\n',tsigma);
     otherwise                           %if filter name not recognized
         disp('Unrecognized motion filter name. The choices are:')
         fprintf('\tsimple - a 3x1 simple 1D filter\n')
         fprintf('\t1D_DOG - a 1D derivative of gaussian filter with user-defined tsigma\n')
         return
 end
+
+disp(motion_filter);
+
 
 images=loadImages(images_path);
 motion_detect(images, motion_filter, thresh, spatial_filter);
