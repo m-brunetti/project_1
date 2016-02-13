@@ -26,4 +26,4 @@ for j=1:lengthImg
             SDsum = SDsum + SD_IJ(j,k);
         end
 end
-sigAvg = SDsum/numImages;
+sigAvg = SDsum/(lengthImg*widthImg);

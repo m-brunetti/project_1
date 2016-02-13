@@ -51,7 +51,7 @@ end
 disp(motion_filter);
 
 
-images=loadImages(images_path);%testing
+images=loadImages();%images_path); %testing
 thresh = double(findThresh(images))
 motion_detect(images, motion_filter, thresh, spatial_filter);
 
