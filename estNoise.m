@@ -4,7 +4,7 @@ Ebar = zeros(lengthImg,widthImg);
 for i=1:numImages
     for j=1:lengthImg
         for k=1:widthImg
-            Ebar(j,k) = Ebar(j,k) + img(j,k,i);
+            Ebar(j,k) = Ebar(j,k) + img(i,j,k);
         end
     end
 end
@@ -16,7 +16,7 @@ SD_IJ = zeros(lengthImg,widthImg);
 for i=1:numImages
     for j=1:lengthImg
         for k=1:widthImg
-            SD_IJ(j,k) = SD_IJ(j,k)+(Ebar(j,k)-img(j,k,i))^2;
+            SD_IJ(j,k) = SD_IJ(j,k)+(Ebar(j,k)-img(i,j,k))^2;
         end
     end
 end
