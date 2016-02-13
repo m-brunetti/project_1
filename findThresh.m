@@ -1,7 +1,4 @@
-function thresh = findThresh(images);
-numImages = 10;
-lengthImg = size(images,1);
-widthImg = size(images,2);
-[Ebar, sigAvg] = estNoise(numImages, images, lengthImg,widthImg);
+function thresh = findThresh(images)
+[avg_noise, max_noise] = EST_NOISE(double(images));
 
-thresh=sigAvg;
+thresh=4*avg_noise;

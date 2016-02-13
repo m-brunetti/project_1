@@ -1,4 +1,4 @@
-function [Ebar, sigAvg] = estNoise(numImages, img, lengthImg,widthImg)
+function [Ebar, sigAvg] = estNoise(numImages, img)
 
 Ebar = zeros(lengthImg,widthImg);
 for i=1:numImages
