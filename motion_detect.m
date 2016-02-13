@@ -48,7 +48,8 @@ for frame=n+1:size(images,1)-n
     
     %display mask - sloppy, we want to do something else for the final
     %project
-    imagesc(squeeze(motion_mask(frame-n,:,:)));colorbar;caxis([0 1]);
+    figure(1);imagesc(squeeze(motion_mask(frame-n,:,:)));colorbar;caxis([0 1]);
+    figure(2);imshow(squeeze(images(frame-n,:,:)));
     
     pause(.05)
     a=frame
