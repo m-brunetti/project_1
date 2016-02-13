@@ -1,4 +1,4 @@
-function [ ] = motion_detect_main(images_path, thresh, motion_filter_name, tsigma, spatial_filter)
+function [ ] = motion_detect_main(images_path, motion_filter_name, tsigma, spatial_filter)
 %% Main function for running motion detection
 %
 %
@@ -51,7 +51,8 @@ end
 disp(motion_filter);
 
 
-images=loadImages(images_path);
+images=loadImages(images_path);%testing
+thresh = double(findThresh(images))
 motion_detect(images, motion_filter, thresh, spatial_filter);
 
 
