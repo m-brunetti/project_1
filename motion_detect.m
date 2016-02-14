@@ -1,4 +1,4 @@
-function [ ] = motion_detect(images, motion_filter, thresh, spatial_filter)
+function [ ] = motion_detect(images, motion_filter, spatial_filter)
 %% Simple motion detection filter
 %
 %
@@ -31,25 +31,32 @@ pixel_derivs=zeros(size(images,1)-n,I,J);
 
 calcThresh=1:50;
 
-images_double=im2double(images);
-
 for frame=n+1:size(images,1)-n
     
-    mult=images_double((frame-n):(frame+n),:,:);
+    current_frame=im2double(images((frame-n):(frame+n),:,:));
     
     %calculate pixel derivatives for entire frame
-    pixel_derivs(frame-n,:,:)=sum(spatial_filter_frame(:,:,:).*mult,1);
+    pixel_derivs(frame-n,:,:)=sum(spatial_filter_frame.*current_frame,1);
     
     if(frame==max(calcThresh(:)))
         thresh=findThresh(pixel_derivs(calcThresh,:,:));
     end
     
     motion_mask(frame-n,:,:)=abs(pixel_derivs(frame-n,:,:))>thresh;
+    motion_red=uint8(cat(3,squeeze(motion_mask(frame-n,:,:))*255,zeros(I,J),zeros(I,J)));
     
+    motion=imfuse(motion_red,squeeze(images(frame,:,:)),'blend');
+    
+    imshow(motion)
+%     imshow(squeeze(images(frame,:,:)));
+%     
+%     motion=imfuse(squeeze(images(frame-n,:,:)),motion_red);
+    %imshow(motion);
     %display mask - sloppy, we want to do something else for the final
     %project
-    figure(1);imagesc(squeeze(motion_mask(frame-n,:,:)));colorbar;caxis([0 1]);
+    %figure(1);imagesc(squeeze(motion_mask(frame-n,:,:)));colorbar;caxis([0 1]);
     %figure(2);imshow(squeeze(images(frame-n,:,:)));
+    
     
     pause(.05)
     a=frame
