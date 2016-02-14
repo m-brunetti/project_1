@@ -30,6 +30,7 @@ motion_mask=zeros(size(images,1)-n,I,J);
 pixel_derivs=zeros(size(images,1)-n,I,J);
 
 calcThresh=1:50;
+thresh=999999;
 
 for frame=n+1:size(images,1)-n
     

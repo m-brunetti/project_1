@@ -4,14 +4,14 @@ function [ ] = motion_detect_main(images_path, motion_filter_name, tsigma, spati
 %
 %%
 
-if (nargin<4)%make sure if DOG filter is used there is a value for tsigma
+if (nargin<3)%make sure if DOG filter is used there is a value for tsigma
     if (strcmp(motion_filter_name,'1D_DOG'))
         disp('value for tsigma required for 1D deriviative of gaussian');
         return
     end
 end
 
-if (nargin<5)%no spatial smoothing if <5 args are passed
+if (nargin<4)%no spatial smoothing if <5 args are passed
     spatial_filter=0;
 end
 
@@ -53,7 +53,7 @@ disp(motion_filter);
 
 images=loadImages(images_path);%testing
 thresh = double(findThresh(images))
-motion_detect(images, motion_filter, thresh, spatial_filter);
+motion_detect(images, motion_filter, spatial_filter);
 
 
 
