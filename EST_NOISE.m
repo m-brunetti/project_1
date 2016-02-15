@@ -1,9 +1,7 @@
-%Michael Brunetti
-%EECE5639
-%EST_NOISE
-%%
-
 function [avg_noise, max_noise] = EST_NOISE(imgs,print)
+%%(Trucco and Verri) EST_NOISE algorithm
+%Estimates the noise from a set of images of the same scene
+%%
 
 if nargin<2
     print=0;

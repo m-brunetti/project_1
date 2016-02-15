@@ -1,7 +1,7 @@
 function [ ] = motion_detect_main(images_path, num_stdevs, motion_filter_name, tsigma, spatial_filter_type, ssigma)
 %% Main function for running motion detection
-%
-%
+%Interprets input arguments, defines filter kernel, calls loadImages, and
+%runs motion_detect
 %%
 
 if (nargin<4)%make sure if DOG filter is used there is a value for tsigma
@@ -14,7 +14,7 @@ end
 if (nargin<5)%no spatial smoothing if <5 args are passed
     spatial_filter_type=0;
     ssigma=0;
-elseif (nargin<6)
+elseif (nargin<6)%check to see if Gaussian filter, if not set ssigma to zero
     if (strcmp(spatial_filter_type,'Gauss'))
         disp('value for ssigma required for 2D Gaussian filter');
         return
@@ -44,8 +44,6 @@ switch motion_filter_name
             deriv_of_gauss(i-1)=sum((0.5.*[-1 0 1]).*gaussian_kernel(i-1:i+1));
         end
         
-        %normalize DOG filter?
-        
         motion_filter=deriv_of_gauss;
         
         fprintf('tsigma = %0.3f\n\n',tsigma);
@@ -56,12 +54,11 @@ switch motion_filter_name
         return
 end
 
+%display the motion filter
 disp(motion_filter);
 
+images=loadImages(images_path);%load the images
 
-images=loadImages(images_path);
+%run motion detection
 motion_detect(images, motion_filter, num_stdevs, spatial_filter_type, ssigma);
-
-
-
 end
