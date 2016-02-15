@@ -1,4 +1,4 @@
-function [ ] = motion_detect(images, motion_filter, thresh, spatial_filter)
+function [ ] = motion_detect(images, motion_filter, spatial_filter)
 %% Simple motion detection filter
 %
 %
@@ -14,8 +14,13 @@ n=(max(size(motion_filter)) - 1)/2;
 I=size(images,2);
 J=size(images,3);
 
+sizeSmoothFilt = 3; 
+
 if (smooth==1)
     %smooth image
+    for i=1:size(images,1)
+       images(i,:,:)=imboxfilt(squeeze(images(i,:,:)),sizeSmoothFilt);
+    end
     
     
 end
@@ -29,6 +34,8 @@ end
 motion_mask=zeros(size(images,1)-n,I,J);
 
 images_double=im2double(images);
+
+thresh = double(findThresh(images));
 
 for frame=n+1:size(images,1)-n
     

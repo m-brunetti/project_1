@@ -4,4 +4,4 @@ lengthImg = size(images,2);
 widthImg = size(images,3);
 [Ebar, sigAvg] = estNoise(numImages, images, lengthImg,widthImg)
 
-thresh=sigAvg;
+thresh=2*sigAvg;
