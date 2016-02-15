@@ -1,44 +1,52 @@
-function [ ] = motion_detect(images, motion_filter, num_stdevs, spatial_filter)
+function [ ] = motion_detect(images, motion_filter, num_stdevs, spatial_filter_type, ssigma)
 %% Simple motion detection filter
 %
 %
 %%
 
-%if spatial filter is a scalar
-if (max(size(spatial_filter))==1)
-    smooth=0;
+images_double=im2double(images);
+
+N_images=size(images,1);
+I=size(images,2);
+J=size(images,3);
+
+
+%spatial filtering
+switch spatial_filter_type
+    case 'Box3'
+        for i=1:N_images
+            images_double(i,:,:)=imboxfilt(squeeze(images_double(i,:,:)),3);
+        end
+    case 'Box5'
+        for i=1:N_images
+            images_double(i,:,:)=imboxfilt(squeeze(images_double(i,:,:)),5);
+        end
+    case 'Gauss'
+        for i=1:N_images
+            images_double(i,:,:)=imgaussfilt(squeeze(images_double(i,:,:)),ssigma);
+        end
 end
 
 n=(max(size(motion_filter)) - 1)/2;
 
-I=size(images,2);
-J=size(images,3);
-
-if (smooth==1)
-    %smooth image
-    for i=1:size(images,1)
-       images(i,:,:)=imboxfilt(squeeze(images(i,:,:)),sizeSmoothFilt);
-    end
-end
-
-spatial_filter_frame=ones(max(size(motion_filter)),I,J);
+temp_filter_frame=ones(max(size(motion_filter)),I,J);
 
 for frame=1:max(size(motion_filter))
-    spatial_filter_frame(frame,:,:)=spatial_filter_frame(frame,:,:).*motion_filter(frame);
+    temp_filter_frame(frame,:,:)=temp_filter_frame(frame,:,:).*motion_filter(frame);
 end
 
-motion_mask=zeros(size(images,1)-n,I,J);
-pixel_derivs=zeros(size(images,1)-n,I,J);
+motion_mask=zeros(N_images-n,I,J);
+pixel_derivs=zeros(N_images-n,I,J);
 
 calcThresh=1:20;
 thresh=999999;
 
-for frame=n+1:size(images,1)-n
+for frame=n+1:N_images-n
     
-    current_frame=im2double(images((frame-n):(frame+n),:,:));
+    current_frame=images_double((frame-n):(frame+n),:,:);
     
     %calculate pixel derivatives for entire frame
-    pixel_derivs(frame-n,:,:)=sum(spatial_filter_frame.*current_frame,1);
+    pixel_derivs(frame-n,:,:)=sum(temp_filter_frame.*current_frame,1);
     
     if(frame==max(calcThresh(:)))
         thresh=findThresh(pixel_derivs(calcThresh,:,:),num_stdevs);

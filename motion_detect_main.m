@@ -1,4 +1,4 @@
-function [ ] = motion_detect_main(images_path, num_stdevs, motion_filter_name, tsigma, spatial_filter)
+function [ ] = motion_detect_main(images_path, num_stdevs, motion_filter_name, tsigma, spatial_filter_type, ssigma)
 %% Main function for running motion detection
 %
 %
@@ -6,13 +6,21 @@ function [ ] = motion_detect_main(images_path, num_stdevs, motion_filter_name, t
 
 if (nargin<4)%make sure if DOG filter is used there is a value for tsigma
     if (strcmp(motion_filter_name,'1D_DOG'))
-        disp('value for tsigma required for 1D deriviative of gaussian');
+        disp('value for tsigma required for 1D Deriviative of Gaussian');
         return
     end
 end
 
 if (nargin<5)%no spatial smoothing if <5 args are passed
-    spatial_filter=0;
+    spatial_filter_type=0;
+    ssigma=0;
+elseif (nargin<6)
+    if (strcmp(spatial_filter_type,'Gauss'))
+        disp('value for ssigma required for 2D Gaussian filter');
+        return
+    else
+        ssigma=0;
+    end
 end
 
 disp(['Motion filter name - ',motion_filter_name]);
@@ -51,8 +59,8 @@ end
 disp(motion_filter);
 
 
-images=loadImages(images_path);%testing
-motion_detect(images, motion_filter, num_stdevs, spatial_filter);
+images=loadImages(images_path);
+motion_detect(images, motion_filter, num_stdevs, spatial_filter_type, ssigma);
 
 
 
