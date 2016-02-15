@@ -16,8 +16,9 @@ J=size(images,3);
 
 if (smooth==1)
     %smooth image
-    
-    
+    for i=1:size(images,1)
+       images(i,:,:)=imboxfilt(squeeze(images(i,:,:)),sizeSmoothFilt);
+    end
 end
 
 spatial_filter_frame=ones(max(size(motion_filter)),I,J);
