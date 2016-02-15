@@ -1,4 +1,4 @@
-function thresh = findThresh(images)
+function thresh = findThresh(images,num_stdevs)
 [avg_noise, max_noise] = EST_NOISE(double(images));
 
-thresh=5*avg_noise;
+thresh=num_stdevs*avg_noise;

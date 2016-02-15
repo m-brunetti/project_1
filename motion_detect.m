@@ -1,4 +1,4 @@
-function [ ] = motion_detect(images, motion_filter, spatial_filter)
+function [ ] = motion_detect(images, motion_filter, num_stdevs, spatial_filter)
 %% Simple motion detection filter
 %
 %
@@ -29,7 +29,7 @@ end
 motion_mask=zeros(size(images,1)-n,I,J);
 pixel_derivs=zeros(size(images,1)-n,I,J);
 
-calcThresh=1:50;
+calcThresh=1:20;
 thresh=999999;
 
 for frame=n+1:size(images,1)-n
@@ -40,7 +40,7 @@ for frame=n+1:size(images,1)-n
     pixel_derivs(frame-n,:,:)=sum(spatial_filter_frame.*current_frame,1);
     
     if(frame==max(calcThresh(:)))
-        thresh=findThresh(pixel_derivs(calcThresh,:,:));
+        thresh=findThresh(pixel_derivs(calcThresh,:,:),num_stdevs);
     end
     
     motion_mask(frame-n,:,:)=abs(pixel_derivs(frame-n,:,:))>thresh;
@@ -59,8 +59,8 @@ for frame=n+1:size(images,1)-n
     %figure(2);imshow(squeeze(images(frame-n,:,:)));
     
     
-    pause(.05)
-    a=frame
+    pause(.01)
+%    a=frame
 
 end
 

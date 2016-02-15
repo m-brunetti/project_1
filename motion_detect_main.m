@@ -1,17 +1,17 @@
-function [ ] = motion_detect_main(images_path, motion_filter_name, tsigma, spatial_filter)
+function [ ] = motion_detect_main(images_path, num_stdevs, motion_filter_name, tsigma, spatial_filter)
 %% Main function for running motion detection
 %
 %
 %%
 
-if (nargin<3)%make sure if DOG filter is used there is a value for tsigma
+if (nargin<4)%make sure if DOG filter is used there is a value for tsigma
     if (strcmp(motion_filter_name,'1D_DOG'))
         disp('value for tsigma required for 1D deriviative of gaussian');
         return
     end
 end
 
-if (nargin<4)%no spatial smoothing if <5 args are passed
+if (nargin<5)%no spatial smoothing if <5 args are passed
     spatial_filter=0;
 end
 
@@ -23,7 +23,7 @@ switch motion_filter_name
     case '1D_DOG'                       %1D Derivative of Gaussian
         
         %set filter size based on tsigma, round to nearest odd integer
-        filter_size=tsigma*2*pi;
+        filter_size=tsigma.^2*2*pi;
         filter_size=2*round(filter_size/2+1)-1;
         
         %create Gaussian kernel
@@ -52,8 +52,7 @@ disp(motion_filter);
 
 
 images=loadImages(images_path);%testing
-thresh = double(findThresh(images))
-motion_detect(images, motion_filter, spatial_filter);
+motion_detect(images, motion_filter, num_stdevs, spatial_filter);
 
 
 
