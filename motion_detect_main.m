@@ -2,6 +2,15 @@ function [ ] = motion_detect_main(images_path, num_stdevs, motion_filter_name, t
 %% Main function for running motion detection
 %Interprets input arguments, defines filter kernel, calls loadImages, and
 %runs motion_detect
+
+%% Input Variables
+%num_stdevs: the factor of standard deviations that the threshold will be
+%greater than the standard deviation of the noise
+%motion_filter_name: two choices, simple or 1D_DOG
+%tsigma: determines filter size of Gaussian derivative, 1D_DOG
+%spatial_filter_type: options are Box3, Box5, and Gauss
+%ssigma: only applies if using Gauss for spatial_filter_type, determines sd
+%of Gaussian averaging filter, and thus the size of the filter
 %%
 
 if (nargin<4)%make sure if DOG filter is used there is a value for tsigma
