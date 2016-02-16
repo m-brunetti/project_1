@@ -45,7 +45,7 @@ switch motion_filter_name
         
         %create Gaussian kernel
         filt=-(filter_size-1)/2:(filter_size-1)/2;
-        gaussian_kernel=sqrt(1/(2*pi*tsigma)).*exp(-filt.^2 ./ (2*tsigma));
+        gaussian_kernel=sqrt(1/(2*pi*tsigma^2)).*exp(-filt.^2 ./ (2*tsigma^2));
         
         %calcualte Derivative of Gaussian and set as motion_filter
         deriv_of_gauss=zeros(1,filter_size-2);
